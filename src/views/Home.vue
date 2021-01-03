@@ -1,6 +1,7 @@
 <template>
   <div class="home_box">
-    Home组件
+    <el-button type="info"
+    @click="logout">退出</el-button>
   </div>
 </template>
 
@@ -13,7 +14,13 @@ export default {
 
   components: {},
 
-  methods: {}
+  methods: {
+    /* 退出登录 */
+    logout(){
+        window.sessionStorage.removeItem('token');
+        this.$router.push("/login");
+    }
+  }
 }
 </script>
 
