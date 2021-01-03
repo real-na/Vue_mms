@@ -1,9 +1,8 @@
 //axios二次封装:做一些公共的基础性设置
 const axios = require('axios');
-const url = process.env.VUE_APP_BASE_API;
 
 const request = axios.create({
-    baseUrl:url,
+    baseURL:process.env.VUE_APP_SERVICE_URL,
     timeout:5000,
 });
 

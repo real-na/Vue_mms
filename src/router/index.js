@@ -1,20 +1,38 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home
+    path:'/',
+    redirect:'/login',
   },
- 
+  {
+    path:'/login',
+    component:()=>import("../views/Login.vue"),
+  },{
+    path:'/home',
+    component:()=>import("../views/Home.vue"),
+  }
 ];
 
 const router = new VueRouter({
   routes
 });
+
+//挂载路由导航守卫
+router.beforeEach((to,from,next)=>{
+  // console.log("to=",to);
+  // console.log("from=",from);
+  //to : 将要访问的路径
+  //path : 代表从哪个路径跳转而来
+  //next : 是一个函数，表示放行 next('/login')强制跳转
+  if(to.path === '/login')return next(); //登录页不需要权限控制
+  // 获取token
+  const tokenStr = window.sessionStorage.getItem('token');
+  if(!tokenStr) return next('/login'); //无token,跳到登录页
+  next(); //有token，放行
+})
 
 export default router;

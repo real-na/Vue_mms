@@ -5,15 +5,15 @@ module.exports = {
      https: false, // 协议
      host: "localhost", // 主机名，也可以 127.0.0.1 或 做真机测试时候 0.0.0.0（会自动去找服务器的ip地址放到这）
         //上线的时候不打包就可以直接写成ip地址
-    proxy:{
-        [process.env.VUE_APP_BASE_API]:{
-            target:process.env.VUE_APP_SERVICE_URL,
-            changOrigin: true, //开启代理
-            pathRewrite:{
-                [`^${process.env.VUE_APP_BASE_API}`]:'',
-            }
-        }
-    }
+    // proxy:{
+    //     [process.env.VUE_APP_BASE_API]:{
+    //         target:process.env.VUE_APP_SERVICE_URL,
+    //         changeOrigin: true, //开启代理
+    //         pathRewrite:{
+    //             [`^${process.env.VUE_APP_BASE_API}`]:'',
+    //         }
+    //     }
+    // }
    },
     lintOnSave: false, // 默认 true, 警告仅仅会被输出到命令行，且不会使得编译失败。关闭语法校验
     outputDir: "dist", // 默认是 dist ,存放打包文件的目录（设置打包目录的文件夹名）

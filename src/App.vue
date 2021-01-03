@@ -5,9 +5,19 @@
   </div>
 </template>
 
-<style lang="scss">
-*{
-  margin: 0;
-  padding: 0;
+<script>
+export default {
+  data () {
+    return {
+    }
+  },
+
+  components: {},
+
+  methods: {}
 }
+</script>
+
+<style lang="scss">
+
 </style>
