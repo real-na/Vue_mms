@@ -38,7 +38,7 @@
 
 <script>
 import userApi from '../api/userApi';
-import {Message} from 'element-ui';
+// import {Message} from 'element-ui';
 export default {
   data () {
     let validateName = (rule,value,callback) =>{
@@ -82,12 +82,12 @@ export default {
         if(!valid)return; //不通过直接return
         const {data: res} = await userApi.login(this.loginForm.name,this.loginForm.psw);
         if(res.meta.status !== 200) {
-            Message.error({
+            this.$message.error({
               message: '登录失败',
               duration:2000,
             })
         }else{
-            Message.success({
+            this.$message.success({
               message: '登录成功',
               duration:2000,
             });

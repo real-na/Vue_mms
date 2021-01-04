@@ -19,15 +19,21 @@ function reg(username,password){
 
 /* 登录功能 */
 function login(username,password){
-    return request.post('login',{
+    return request.post('/login',{
             username,
             password
         }
     )
 }
 
+/* 获取左侧菜单数据 */
+function getMenus(){
+    return request.get('/menus')
+}
+
 module.exports = {
     checkName,
     reg,
-    login
+    login,
+    getMenus
 }
