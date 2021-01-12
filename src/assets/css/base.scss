@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#app {
+    height: 100%;
+}
+
+.el-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.el-card{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15) !important;
+}
+
+@for $i from 1 to 6{
+    .p-#{$i}{
+        padding: $i*0.3em;
+    }
+    .m-#{$i}{
+        margin: $i*0.5rem;
+    }
+    .mt-#{$i}{
+        margin-top: $i*0.5rem;
+    }
+}

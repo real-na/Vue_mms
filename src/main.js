@@ -4,7 +4,7 @@ import router from "./router";
 import "./plugins/element";
 
 // 入口文件中导入全局样式表
-import "./assets/css/base.css";
+import "./assets/css/base.scss";
 
 Vue.config.productionTip = false;
 

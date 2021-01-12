@@ -16,15 +16,16 @@
                 <div class="toggle-button"
                 @click="showMenu">|||</div>
                 <el-menu
-                    default-active="1"
                     @open="handleOpen"
                     @close="handleClose"
                     background-color="#333744"
                     text-color="#fff"
                     active-text-color="#409eff"
                     unique-opened
+                    router
                     :collapse="isShowMenu"
                     :collapse-transition = "false"
+                    :default-active="'/'+activePath"
                 >
                     <!-- 一级菜单 -->
                     <el-submenu :index="item.id+''" 
@@ -36,9 +37,10 @@
                             <span>{{item.authName}}</span>
                         </template>
                         <!-- 二级菜单 -->
-                        <el-menu-item :index="subItem.id + ''"
+                        <el-menu-item :index="'/'+subItem.path"
                         v-for="subItem in item.children"
-                        :key="subItem.id">
+                        :key="subItem.id"
+                        @click="saveNavState(subItem.path)">
                             <template slot="title">
                                 <i class="el-icon-menu"></i>
                                 <span>{{subItem.authName}}</span>
@@ -52,18 +54,12 @@
                         </el-menu-item> -->
                     </el-submenu>
                     <!-- 一级 -->
-                    <!-- <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>导航二</span>
-                        </template>
-                        <el-menu-item index="2-1">选项1</el-menu-item>
-                        <el-menu-item index="2-2">选项2</el-menu-item>
-                    </el-submenu> -->
                 </el-menu>
             </el-aside>
             <!-- 右侧主题内容 -->
-            <el-main>Main</el-main>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
@@ -85,6 +81,8 @@ export default {
             },
             //是否折叠左侧菜单
             isShowMenu:false,
+            //当前被激活的链接
+            activePath:'',
         };
     },
 
@@ -105,7 +103,6 @@ export default {
         /* 获取左侧菜单数据 */
         async fetchMenus(){
             const {data} = await userApi.getMenus();
-            console.log("data=",data);
             //获取到数据以后就应该把获取到的数据立即挂载到data中
             if(data.meta.status !== 200) return this.$message.error(res.meta.msg);
             this.menulist = data.data;
@@ -114,12 +111,19 @@ export default {
         showMenu(){
             this.isShowMenu=!this.isShowMenu;
             //除了改变这个状态，还需要对左侧的宽度进行动态赋值
+        },
+        /* 点击改变二级菜单激活状态 */
+        saveNavState(activePath){
+            window.sessionStorage.setItem('activePath',activePath);
+            this.activePath = activePath;
         }
     },
 
     created(){
         //页面一加载就获取左侧菜单数据
         this.fetchMenus();
+        //home组件一创建就获取当前被激活链接的值
+        this.activePath = window.sessionStorage.getItem('activePath');
     }
 };
 </script>

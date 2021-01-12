@@ -31,9 +31,26 @@ function getMenus(){
     return request.get('/menus')
 }
 
+/* 获取用户列表数据 */
+function getUserList({query='',pagenum=1,pagesize=2}){
+    return request.get('/users',{
+        params:{
+            query,
+            pagenum,
+            pagesize
+        }
+    })
+}
+
+/* 修改用户状态 */
+function changeUserState(id,type){
+    return request.put(`/users/${id}/state/${type}`)
+}
 module.exports = {
     checkName,
     reg,
     login,
-    getMenus
+    getMenus,
+    getUserList,
+    changeUserState
 }

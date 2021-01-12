@@ -13,8 +13,18 @@ const routes = [
     component:()=>import("../views/Login.vue"),
   },{
     path:'/home',
+    redirect:'/welcome',
     component:()=>import("../views/Home.vue"),
-  }
+    children:[
+      {
+        path:"/users",
+        component:()=>import("../views/User"),
+      },{
+        path:"/welcome",
+        component:()=>import("../views/Home/Welcome.vue"),
+      }
+    ]
+  },
 ];
 
 const router = new VueRouter({
