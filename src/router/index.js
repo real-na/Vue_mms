@@ -22,6 +22,24 @@ const routes = [
       },{
         path:"/welcome",
         component:()=>import("../views/Home/Welcome.vue"),
+      },{
+        path:"/rights",
+        component:()=>import("../views/Home/Welcome.vue"),
+      },{
+        path:"/roles",
+        component:()=>import("../views/Home/Welcome.vue"),
+      },{
+        path:"/categories",
+        component:()=>import("../views/Home/Welcome.vue"),
+      },{
+        path:"/params",
+        component:()=>import("../views/Home/Welcome.vue"),
+      },{
+        path:"/goods",
+        component:()=>import("../components/Goods/List.vue"),
+      },{
+        path:"/goods/add",
+        component:()=>import("../components/Goods/Add.vue"),
       }
     ]
   },

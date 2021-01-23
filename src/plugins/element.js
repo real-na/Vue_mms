@@ -24,11 +24,23 @@ import {
     Divider,
     Pagination,
     Dialog,
+    Avatar,
+    Option,
+    Select,
+    Cascader,
+    Upload,
+    Alert,
+    Step,
+    Steps,
+    TabPane,
+    Tabs,Radio,
+    Checkbox,
+    CheckboxGroup,
 } from 'element-ui';
 
-import {Message} from 'element-ui';
+import {Message,MessageBox} from 'element-ui';
 Vue.prototype.$message = Message;
-
+Vue.prototype.$confirm = MessageBox.confirm;
 /* 按需引入 */
 Vue.use(Button);
 Vue.use(Form);
@@ -54,3 +66,16 @@ Vue.use(Tooltip);
 Vue.use(Divider);
 Vue.use(Pagination);
 Vue.use(Dialog);
+Vue.use(Avatar);
+Vue.use(Option);
+Vue.use(Select);
+Vue.use(Cascader);
+Vue.use(Upload);
+Vue.use(Alert);
+Vue.use(Step);
+Vue.use(Steps);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Radio);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
