@@ -80,7 +80,8 @@
                                 list-type="picture-card"
                                 :auto-upload="false"
                                 :on-success="avatarSuccess"
-                                :http-request="uploadFile">
+                                :on-preview="avatarPreview"
+                                :on-remove="avatarRemove">
                                     <i slot="default" class="el-icon-plus"></i>
                                     <div slot="file" slot-scope="{file}">
                                     <img
@@ -346,13 +347,10 @@ export default {
         },
         //头像上传成功
         avatarSuccess(response, file){
-            //成功时保存一下后台给你返回的图片，可以渲染到页面上
+            //response:成功时保存一下后台给你返回的图片，可以渲染到页面上
             this.addForm.avatar = URL.createObjectURL(file.raw);
         },
-        //覆盖默认的上传行为，可以自定义上传的实现
-        uploadFile(file){
-            console.log(file);
-        },
+
         handleRemove(file) {
             console.log(file);
         },

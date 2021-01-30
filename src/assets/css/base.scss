@@ -29,3 +29,8 @@ body,
         margin-top: $i*0.5rem;
     }
 }
+
+//富文本编辑器高度
+.ql-editor{
+    min-height: 300px;
+}

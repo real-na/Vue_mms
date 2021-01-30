@@ -66,29 +66,52 @@
                    @change="enevChange">{{enev}}</el-radio>
                 </template>
                 <template v-else>
-                  <el-checkbox-group v-model="item.goodsTip">
+                  <el-checkbox-group v-model="addForm.goodsTip">
                     <el-checkbox :label="tip"
-                    v-for="(tip,idx) in item.goodsTip"
+                    v-for="(tip,idx) in addForm.goodsTip"
                     :key="idx" border></el-checkbox>
                   </el-checkbox-group>
                 </template>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品属性" name="2">
-            
+          <el-tab-pane label="其他信息" name="2">
+            <el-form-item label="商品商场价" prop="mallPrice">
+              <el-input v-model="addForm.mallPrice"></el-input>
+            </el-form-item>
+            <el-form-item label="商品零售价" >
+              <el-input v-model="addForm.retailPrice" prop="retailPrice"></el-input>
+            </el-form-item>
+            <el-form-item label="商品供应价" >
+              <el-input v-model="addForm.supplyPrice" prop="supplyPrice"></el-input>
+            </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品图片" name="3">
+            <el-upload
+              action="uploadURL"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              list-type="picture"
+              :http-request="uploadFile"
+              multiple>
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+          </el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!-- 富文本编辑器组件 -->
+            <quill-editor v-model="addForm.slogan">
+            </quill-editor>
+            <!-- 添加商品的按钮 -->
+            <el-button type="primary" class="btnAdd" @click="addGood">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
-
         </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
-import {typeOptions,storeData} from '../../assets/json/navList';
-
+import {typeOptions,storeData,otherAttr} from '../../assets/json/navList';
+import goodsApi from '../../api/goodsApi';
 export default {
   name:'',
   data () {
@@ -99,18 +122,23 @@ export default {
       //添加商品的表单数据对象
       addForm:{
         goodsName:'',
-        salePrice:0,
+        salePrice:null,
         goodsBrand:'',
         goodsStandard:'',
-        goodsType:'',
         typeList:[],
         //商品储存环境
-        goodsStore:''
+        goodsStore:storeData[0].goodsEnev[0],
+        goodsTip:storeData[1].goodsTip,
+        //商品mallPrice,零售价,进价
+        mallPrice:null,
+        retailPrice:null,
+        supplyPrice:null,
+        slogan:'',
       },
       //添加商品的表单验证规则
       addFormRules:{
         goodsName:[{required:true,message:'请输入商品名称',trigger:'blur'}],
-        salePrice:[{required:true,message:'请输入商品价格',trigger:'blur'}],
+        salePrice:[{required:true,message:'请输入商品售价',trigger:'blur'}],
         goodsBrand:[{required:true,message:'请输入品牌名称',trigger:'blur'}],
         goodsType:[{required:true,message:'请选择商品来源',trigger:'blur'}],
         typeList:[{required:true,message:'请选择商品类型',trigger:'blur'}],
@@ -121,6 +149,12 @@ export default {
       label:'name',value:'id',children:'item' },
       //当前选中的存储环境
       chooseEnv:0,
+      //其他静态属性
+      otherAttr,
+      // uploadURL:'http://47.98.112.14:3010/goods/action',
+      //存储上传的图片信息
+      picForm:[],
+      formdata:new FormData(),
     }
   },
 
@@ -131,28 +165,82 @@ export default {
     changeTab(value){
       // console.log(value); //当前点击组件实例
       // console.log(this.activeStep); //当前对应的name名称
-      if(this.activeStep === 1){
-        //表示访问的是商品参数面板
+      if(this.activeStep === 2){
+        //表示访问的是其他属性面板，调别人的接口，获取到有那些其他属性
       }
     },
     //侧边栏切换之前
     beforeTabLeave(newtabName,oldtabName){
-      let {goodsName,goodsBrand,goodsType,typeList} = this.addForm;
-      // let require = goodsName && goodsBrand && goodsType
-      // console.log(!(goodsName && goodsBrand && goodsType));
-      /* if(oldtabName === '0'&& !(goodsName && goodsBrand && goodsType && typeList.length == 2)){
-        this.$message.error('请填写必填项');
+      let {typeList} = this.addForm;
+      
+      if(oldtabName === '0'&&  typeList.length !== 2){
+        this.$message.error('请选择商品分类');
         return false;
-      } */
+      }
     },
     //多级联动选中项发生改变
     typeChange(nowType){
-      console.log(nowType);
+      // console.log(nowType);
     },
     //选中环境变化时把当前环境赋值给addForm中的数据
     enevChange(nowEnev){
+      // console.log(nowEnev);
       this.addForm.goodsStore = this.storeData[0].goodsEnev[nowEnev];
-    }
+    },
+    //选中的goodsTip发生改变
+    // checkboxChange(value){
+    //   console.log(value);
+    //   console.log(this.addForm.goodsTip);
+    // },
+    //点击图片预览
+    handlePreview(){
+
+    },
+    //处理移除图片的操作
+    handleRemove(file){
+      //file:当前移除的图片
+      //fileList:移除后剩余的图片数组
+      // console.log("removefile",file);
+      this.picForm = this.picForm.filter(item=>{
+        return item.uid !== file.raw.uid;
+      });
+    },
+    //自定义上传行为
+    async uploadFile(file){
+      // this.formdata.append('goodsImg',file.file);
+      this.picForm = [...this.picForm,file.file];
+      // console.log("picForm=",this.picForm);
+    },
+    addGood(){
+      // console.log("addForm=",this.addForm);
+      // console.log("picForm=",this.picForm);
+      this.$refs.addFormRef.validate(async (valid)=>{
+        if(!valid)return this.$message.error('请填写必要的表单信息')
+        //执行添加商品的业务逻辑
+        const {goodsName,salePrice,goodsBrand,goodsStandard,goodsStore,goodsTip,mallPrice,retailPrice,supplyPrice,slogan} = this.addForm;
+        let typeList = this.addForm.typeList.join(',');
+        let formdata = new FormData();
+        formdata.append('goodsName',goodsName);
+        formdata.append('salePrice',salePrice);
+        formdata.append('goodsBrand',goodsBrand);
+        formdata.append('goodsStandard',goodsStandard);
+        formdata.append('typeList',typeList);
+        formdata.append('goodsStore',goodsStore);
+        formdata.append('goodsTip',goodsTip);
+        formdata.append('mallPrice',mallPrice);
+        formdata.append('retailPrice',retailPrice);
+        formdata.append('supplyPrice',supplyPrice);
+        formdata.append('slogan',slogan);
+        this.picForm.forEach(item=>{
+          formdata.append('goodsImg',item);
+        })
+        // console.log("formdata=",this.formdata);
+        let {data} = await goodsApi.addGoods(formdata);
+        if(!data.flag)return this.$message.error('添加商品失败');
+        this.$message.success('添加商品成功');
+        this.$router.push('/goods')
+      })
+    },
   },
   computed:{
     // typeList(){
@@ -175,5 +263,8 @@ export default {
 }
 .el-checkbox{
   margin: 5px !important;
+}
+.btnAdd{
+  margin-top: 15px;
 }
 </style>

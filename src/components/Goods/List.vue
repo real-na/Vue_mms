@@ -159,12 +159,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).catch(err=>err);
-        console.log("confirmRes",confirmRes);
+        // console.log("confirmRes",confirmRes);
         if(confirmRes !== 'confirm'){
             return this.$message.info('已取消删除');   
         }
         const {data} = await goodsApi.delgood(id);
-        console.log(data);
+        // console.log(data);
         if(!data.flag){
             return this.$message.error('删除失败!');
         }
