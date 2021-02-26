@@ -80,8 +80,7 @@
                                 list-type="picture-card"
                                 :auto-upload="false"
                                 :on-success="avatarSuccess"
-                                :on-preview="avatarPreview"
-                                :on-remove="avatarRemove">
+                                >
                                     <i slot="default" class="el-icon-plus"></i>
                                     <div slot="file" slot-scope="{file}">
                                     <img
@@ -392,11 +391,11 @@ export default {
     font-size: 12px;
     }
 }
-.el-cascader__dropdown{
-    // top: 483px !important;
-    left: 0;
-    .el-cascader-menu{
-        max-height: 200px;
-    }
-}
+// .el-cascader__dropdown{
+//     // top: 483px !important;
+//     left: 0;
+//     .el-cascader-menu{
+//         max-height: 200px;
+//     }
+// }
 </style>

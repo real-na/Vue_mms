@@ -104,4 +104,11 @@ export default {
 
 <style scoped lang="scss">
 @import "../assets/scss/login.scss";
+.el-cascader__dropdown{
+    // top: 483px !important;
+    left: 0;
+    .el-cascader-menu{
+        max-height: 200px;
+    }
+}
 </style>

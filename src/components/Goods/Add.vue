@@ -180,7 +180,8 @@ export default {
     },
     //多级联动选中项发生改变
     typeChange(nowType){
-      // console.log(nowType);
+      console.log(nowType);
+      console.log("选中的",this.addForm.typeList);
     },
     //选中环境变化时把当前环境赋值给addForm中的数据
     enevChange(nowEnev){

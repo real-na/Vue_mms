@@ -36,6 +36,9 @@ import {
     Tabs,Radio,
     Checkbox,
     CheckboxGroup,
+    Tag,
+    Timeline,
+    TimelineItem,
 } from 'element-ui';
 
 import {Message,MessageBox} from 'element-ui';
@@ -79,3 +82,6 @@ Vue.use(TabPane);
 Vue.use(Radio);
 Vue.use(CheckboxGroup);
 Vue.use(Checkbox);
+Vue.use(Tag);
+Vue.use(Timeline);
+Vue.use(TimelineItem);
